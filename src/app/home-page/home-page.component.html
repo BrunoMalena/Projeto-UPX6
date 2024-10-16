@@ -1,0 +1,42 @@
+<div>
+    <h2>Teste</h2>
+    <button (click)="onStartQuiz()">Iniciar Teste</button>
+
+    <div *ngIf="showQuiz">
+        <h2>Área de Perguntas</h2>
+        <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
+            <mat-card class="quiz-card">
+                <mat-card-content>
+                    <div *ngFor="let q of qBank" class="question">
+                        <mat-card class="question-card">
+                            <mat-card-title>{{ q.question }}</mat-card-title>
+                            <mat-card-content>
+                                <mat-radio-group [formControlName]="q.id.toString()">
+                                    <mat-radio-button *ngFor="let option of q.options" [value]="option">
+                                        {{ option }}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </mat-card-content>
+                <button color="primary" type="submit">Enviar</button>
+            </mat-card>
+            <div *ngIf="showResults" class="score">
+                <h2>Pontuação Final: {{ score }} / {{ qBank.length }}</h2>
+                <button (click)="exitFullScreen()">Sair do Modo de Tela Cheia</button>
+            </div>
+        </form>
+
+        <h3>Cronômetro de Pomodoro</h3>
+        <div class="cronometro">
+            <span>{{ (totalSeg / 60) | number: '2.0-0' }}:</span>
+            <span>{{ (totalSeg % 60) | number: '2.0-0' }}</span>
+        </div>
+        
+        <button (click)="reset()">Reiniciar Cronômetro</button>
+    </div>
+
+    <!-- Overlay -->
+    <div *ngIf="isOverlayVisible" class="overlay"></div>
+</div>
